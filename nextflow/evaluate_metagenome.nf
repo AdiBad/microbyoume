@@ -1,33 +1,41 @@
 nextflow.enable.dsl=2
-
-process run_fastqc{
+process run_fastqc {
     conda 'qc_env'
-    publishDir 'results', mode: 'move'
+    publishDir 'results/fastqc', mode: 'move'
 
-    input: tuple val(sample), path(reads)
+    input: 
+    tuple val(sample), path(reads)
 
-    output: path 'fastqc/${sample}/*'
+    output: 
+    tuple val(sample), path('fastqc/${sample}')
 
     script:
     """
-    mkdir fastqc/${sample}
+    mkdir -p fastqc/${sample}
     fastqc ${reads[0]} ${reads[1]} -o fastqc/${sample}
     """
 }
 
-process run_multiqc{
+process run_multiqc {
+    conda 'qc_env'
+    publishDir 'results/multiqc', mode: 'move'
+
     input: path fastq_dirs
 
-    output: 'multiqc_report.html'
+    output: path 'multiqc_report.html'
 
     script:
     """
-    multiqc ${fastq_dirs} -o ${fastq_dirs}
+    multiqc ${fastq_dirs} -o .
     """
 }
 
 workflow{
-    Channel.fromFilePairs(params.reads, flat: True).set{read_pairs}
+    read_pairs  = Channel.fromFilePairs(
+        params.reads, flat: true).set{read_pairs}
+        .view { "INPUT: $it" }
     fastqc_results = run_fastqc(read_pairs)
-    multiqc = run_multiqc(fastqc_results.collect())
+    .view { "FASTQC OUTPUT: $it" }
+    run_multiqc(fastqc_results.collect())
+     .view { "MULTIQC INPUT: $it" }
 }
