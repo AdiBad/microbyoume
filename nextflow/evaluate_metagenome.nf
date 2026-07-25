@@ -1,13 +1,13 @@
 nextflow.enable.dsl=2
 process run_fastqc {
-    conda 'qc_env'
-    publishDir 'results/fastqc', mode: 'move'
+    conda '/home/adibad/miniconda3/envs/qc_env'
+    publishDir 'results/fastqc', mode: 'copy'
 
     input: 
     tuple val(sample), path(reads)
 
     output: 
-    tuple val(sample), path('fastqc/${sample}')
+    tuple val(sample), path("fastqc/${sample}")
 
     script:
     """
@@ -17,7 +17,7 @@ process run_fastqc {
 }
 
 process run_multiqc {
-    conda 'qc_env'
+    conda '/home/adibad/miniconda3/envs/qc_env'
     publishDir 'results/multiqc', mode: 'move'
 
     input: path fastq_dirs

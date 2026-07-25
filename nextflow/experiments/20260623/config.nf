@@ -1,6 +1,6 @@
 conda.enabled = true
 params{
-    reads = '/data/FASTQ/DNA/*_{R1,R2}.fastq.gz'
+    reads = '/home/adibad/projects/microbyoume/data/FASTQ/DNA/*_{R1,R2}.fastq.gz'
 }
 
 process {
