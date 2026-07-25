@@ -1,4 +1,4 @@
-workDir = '/home/adibad/nf_work'
+conda.enabled = true
 params{
     reads = '/data/FASTQ/DNA/*_{R1,R2}.fastq.gz'
 }

@@ -32,8 +32,7 @@ process run_multiqc {
 
 workflow{
     read_pairs  = Channel.fromFilePairs(
-        params.reads, flat: true).set{read_pairs}
-        .view { "INPUT: $it" }
+        params.reads).view { "INPUT: $it" }
     fastqc_results = run_fastqc(read_pairs)
     .view { "FASTQC OUTPUT: $it" }
     run_multiqc(fastqc_results.collect())

@@ -11,6 +11,12 @@ Occular fluid metagenome collected from:
 
 > Infected eye: https://www.ebi.ac.uk/ena/browser/view/SAMN05362796?show=reads
 
+## Requirements loading
+
+There is environemnt information defined for conda, which can be loaded using:
+1. `conda install -n base -c conda-forge mamba` (install mamba for fast downloads)
+2. `mamba env create -f qc_env.yml` (install conda env using mamba)
+
 ## Workflows followed
 
 Classic metagenomics workflow for shotgun reads processing
